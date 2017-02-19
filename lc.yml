@@ -1,0 +1,3 @@
+project_name: terraformexample
+docker_image_name: my-cool-infra
+docker_registry: paulcichonski
