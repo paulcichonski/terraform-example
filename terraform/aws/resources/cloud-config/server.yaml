@@ -1,0 +1,40 @@
+#cloud-config
+
+write_files:
+  - path: /opt/www/index.html
+    permissions: 0444
+    owner: root
+    content: |
+      <html>
+      <body>Hello World</body
+      </html>
+coreos:
+  update:
+    reboot-strategy: reboot
+  units:
+    - name: etcd2.service
+      enable: false
+    - name: fleet.service
+      enable: false
+    - name: docker.service
+      drop-ins:
+        - name: 10-log-driver.conf
+          content: |
+            [Service]
+            Environment="DOCKER_OPTS='--log-driver=journald'"
+      ## Very simplistic webserver that prings 'Hello World'
+    - name: webserver.service
+      command: start
+      content: |
+        [Unit]
+        Description=Simple Webserver
+
+        [Service]
+        TimeoutStartSec=0
+        StartLimitInterval=0
+        Restart=always
+        ExecStartPre=-/usr/bin/docker kill server
+        ExecStartPre=-/usr/bin/docker rm -fv server
+        ExecStartPre=-/usr/bin/docker pull fnichol/uhttpd
+        ExecStart=/usr/bin/docker run -p 80:80 -v /opt/www:/www fnichol/uhttpd
+        ExecStop=/usr/bin/docker stop server

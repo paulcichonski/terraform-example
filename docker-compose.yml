@@ -1,2 +1,56 @@
-noop:
-   image: alpine
+aws-base: &aws
+  image: my-cool-infra
+  ## overwrite packaged files to make updates appear faster in image for local dev workflow
+  volumes:
+    - ./terraform:/opt/terraform
+    - ./dev-env/configs/terraform.tfvars:/opt/vars/env.tfvars
+    - ./init.d:/opt/init.d
+  environment:
+    - AWS_ACCESS_KEY_ID
+    - AWS_SECRET_ACCESS_KEY
+    - AWS_REGION=us-west-2
+    - REMOTE_BACKEND_S3_BUCKET
+    - REMOTE_BACKEND_S3_KEY
+    - TF_VAR_infra_name
+
+graph:
+  <<: *aws
+  command: graph
+
+plan:
+  <<: *aws
+  entrypoint: ["/opt/init.d/start.sh", "plan"]
+
+apply:
+  <<: *aws
+  entrypoint: ["/opt/init.d/start.sh", "apply"]
+
+destroy:
+  <<: *aws
+  entrypoint: ["/opt/init.d/start.sh", "destroy"]
+
+show:
+  <<: *aws
+  command: show
+
+output:
+  <<: *aws
+  entrypoint: ["/opt/init.d/start.sh", "output"]
+
+refresh:
+  <<: *aws
+  entrypoint: ["/opt/init.d/start.sh", "refresh"]
+
+# blackbox-test:
+#   build: blackbox-test
+#   volumes:
+#     - .:/opt/project
+#     - /var/run/docker.sock:/var/run/docker.sock
+#   environment:
+#     - VARS_LOCATION=/opt/project/dev-env/configs/terraform.tfvars
+#     - AWS_REGION=us-west-2
+#     - AWS_ACCESS_KEY_ID
+#     - AWS_SECRET_ACCESS_KEY
+#     - REMOTE_BACKEND_S3_BUCKET
+#     - REMOTE_BACKEND_S3_KEY
+#     - TF_VAR_infra_name
