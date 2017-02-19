@@ -93,3 +93,19 @@ following:
 1. Run Gherkin tests found in `./blackbox-test/features` on the infrastructure to
 verify it is working
 1. Teardown the infrastructure
+
+To run the full test suite:
+
+```
+lc bootstrap
+lc blackbox-test
+```
+
+### Setting up CI
+
+Ensure that the environment variables mentioned in "Guide for Consumers" are
+securely exported, and then your job definition should just be:
+
+```
+lc ci
+```

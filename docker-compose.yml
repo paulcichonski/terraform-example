@@ -41,16 +41,15 @@ refresh:
   <<: *aws
   entrypoint: ["/opt/init.d/start.sh", "refresh"]
 
-# blackbox-test:
-#   build: blackbox-test
-#   volumes:
-#     - .:/opt/project
-#     - /var/run/docker.sock:/var/run/docker.sock
-#   environment:
-#     - VARS_LOCATION=/opt/project/dev-env/configs/terraform.tfvars
-#     - AWS_REGION=us-west-2
-#     - AWS_ACCESS_KEY_ID
-#     - AWS_SECRET_ACCESS_KEY
-#     - REMOTE_BACKEND_S3_BUCKET
-#     - REMOTE_BACKEND_S3_KEY
-#     - TF_VAR_infra_name
+blackbox-test:
+  build: blackbox-test
+  volumes:
+    - .:/opt/project
+    - /var/run/docker.sock:/var/run/docker.sock
+  environment:
+    - AWS_REGION=us-west-2
+    - AWS_ACCESS_KEY_ID
+    - AWS_SECRET_ACCESS_KEY
+    - REMOTE_BACKEND_S3_BUCKET
+    - REMOTE_BACKEND_S3_KEY
+    - TF_VAR_infra_name
