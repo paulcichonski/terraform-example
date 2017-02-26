@@ -1,6 +1,7 @@
 # terraform-example
 
-Companion code for this blog post: TODO: LINK
+Companion code for this blog post: [A Terraform Workflow Part 1: Packaging and
+Versioning](https://medium.com/@paulcichonski/a-terraform-workflow-part-1-packaging-and-versioning-bc1fbbedecc6).
 
 This repo produces a Docker image called `paulcichonski/my-cool-infra` that will
 stand up a super simplistic infrastructure in AWS that contains:
