@@ -57,7 +57,7 @@ docker run -e AWS_ACCESS_KEY_ID \
 
 ### Pre-requisites
 
-* [Elsy](https://github.com/cisco/elsy)
+* [elsy](https://github.com/cisco/elsy)
 
 ### How to Run
 
